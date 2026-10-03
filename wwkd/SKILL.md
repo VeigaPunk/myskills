@@ -19,10 +19,6 @@ Planning is a disciplined response to **silent failure**. The cheapest bugs to f
 the ones you catch before the next layer lands on top. This skill is the posture that
 catches them.
 
-Source material lives at `~/wikillm/llm-wiki/wiki/karpathy/` — notably
-`karpathy-recipe-neural-networks.md` and `builder-philosophy.md`. This SKILL.md is the
-runtime compression.
-
 ---
 
 ## Core Principles (non-negotiable)
@@ -205,9 +201,6 @@ Trigger the skill when:
 Do NOT use when:
 - The task is a one-line change — planning overhead exceeds the work
 - Spec is still in flux — route to brainstorming/heuer-planning first
-- User wants vibe-code throwaway glue — that regime is explicitly outside wwkd's remit
-  (see `builder-philosophy.md` on code-is-ephemeral; wwkd is the center-of-stack posture,
-  not the glue posture)
 
 ---
 
