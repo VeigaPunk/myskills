@@ -201,8 +201,6 @@ Trigger the skill when:
 Do NOT use when:
 - The task is a one-line change — planning overhead exceeds the work
 - Spec is still in flux — resolve the design before writing an implementation plan
-- User wants vibe-code throwaway glue — that regime is explicitly outside wwkd's remit
-  (code-is-ephemeral; wwkd is the center-of-stack posture, not the glue posture)
 
 ---
 
