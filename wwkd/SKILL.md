@@ -133,15 +133,3 @@ This posture refuses to produce:
 > "Pareto-optimal iteration at velocity, with no rigidly defined goal."
 
 > "Quality cannot be defined, but it can be recognized."
-
----
-
-## Source excerpts
-
-> "Neural net training fails silently." — Karpathy, *A Recipe for Training
-> Neural Networks*, 2019. The epigraph of the posture: silent failure is what
-> the axes map exists to surface.
-
-> "Code is free, ephemeral, malleable, discardable after single use." —
-> Karpathy, 2025 Year in Review. The map and the milestones are the permanent
-> artifact; the code under them is disposable.
