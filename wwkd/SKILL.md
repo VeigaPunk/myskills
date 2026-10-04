@@ -1,222 +1,147 @@
 ---
 name: wwkd
 description: >
-  What Would Karpathy Do — a planning and implementation posture distilled from Karpathy's
-  public body of work (the Recipe, builder philosophy, vibe coding, context engineering).
-  Activate when the user wants to turn an approved spec into an implementation plan, or
-  asks "plan this", "break this down", "how would we build this", "write the plan",
-  "/wwkd", "what would karpathy do", or invokes planning after brainstorming. Biases toward
-  data-first inspection, end-to-end skeletons before optimization, overfit-one-case before
-  generalizing, minimal one-file implementations over frameworks, and structural
-  verification at every step. Opposite of "fast and furious." Produces plans whose
-  sequencing reflects least-disruption ordering — each step runnable in isolation, each
-  assumption verified before the next layer lands.
+  What Would Karpathy Do — the planning posture of the ufo L1. Not a standalone
+  skill: wwkd is the axes-mapping layer the L1 loads to turn a task into a
+  dynamic axis set, group axes into milestones, and hand both to the L1
+  dispatcher for L2 seat assignment. Pairs with the godspeed directive: the
+  L1 orchestrates under the wwkd map, L2 agents execute under the directive
+  with unbounded capability and no rigidly assigned goal. Activate on "/wwkd",
+  "plan this", "map the axes", "break this down", or whenever ufo loads its
+  planner stance. Under ufo, run-logic §5 is normative: this file is the
+  enrichment, and any drift resolves in §5's favor (I9).
 ---
 
-# What Would Karpathy Do — Planning Posture
+# WWKD — Axes-Mapping Posture (ufo L1)
 
-Planning is a disciplined response to **silent failure**. The cheapest bugs to fix are
-the ones you catch before the next layer lands on top. This skill is the posture that
-catches them.
+WWKD maps a task onto **axes**, groups axes into **milestones**, and hands the
+map to the L1 dispatcher. It does not execute the plan, does not own agents,
+and does not stand alone outside the ufo structure. Under ufo it is
+**idempotent**: loading it never changes ufo behavior beyond the plan it
+helps write — it is enrichment, never a gate (I9; run-logic §5 wins on drift).
 
----
-
-## Core Principles (non-negotiable)
-
-1. **Become one with the data first.** Before writing any plan step, inspect the actual
-   inputs, outputs, and intermediate artifacts. Not the spec's description of them —
-   the thing itself. Count. Eyeball. Find outliers. Most plan failures trace to
-   skipping this step. No step of the plan lands before this one has been done.
-
-2. **Build a skeleton you trust before adding capability.** The first milestone is an
-   end-to-end pipeline whose every component is predictable to the last digit. Fix
-   seeds. Disable augmentation. Pick the simplest model that could possibly work. The
-   purpose is not to produce a good result — it is to establish infrastructure whose
-   later failures can be localized.
-
-3. **Overfit one case before generalizing.** Prove the pipeline can solve exactly one
-   minimal instance (one SKU, one week, one file, one query). If it cannot, no amount
-   of breadth will save it. Overfitting a single case is a capacity smoke test, not a
-   training goal.
-
-4. **Regularize in order of least disruption.** Add complexity one thing at a time.
-   Each new layer can obscure bugs from the prior layer — which is why the order
-   matters. Every regularizer is introduced after the previous one is trusted, never
-   in a batch.
-
-5. **Tune only after correctness is proven.** Hyperparameter search is a stage 5
-   activity, not a stage 1 activity. Random search beats grid search; one or two axes
-   dominate and the rest are noise. Keep the tuning budget small and measure everything.
-
-6. **Code is ephemeral; knowledge is permanent.** Protect the spec, the prompt, the
-   data, the knowledge artifact. The code around those is disposable. Don't
-   over-engineer the glue — vibe-code it, verify the center structurally.
-
-7. **Follow established patterns.** Novel architecture is where almost all debugging
-   time goes, and almost all of it is wasted. If a related problem has been solved
-   nearby (existing module, reference implementation, a paper), start from that. Save
-   invention for where leverage actually lives.
-
-8. **Fits in one file, one screen.** Minimum implementable form. ~600 lines per
-   module. Single-sitting readable. Small surface area = fewer bugs = easier iteration.
-   If the plan forces a framework, reconsider — the framework is almost never the
-   leverage point.
-
-9. **Structural verification at every step.** Training fails silently. Every plan step
-   has an explicit verification gate — a command you can run, a number you can
-   compare, an output you can diff. No step is "done" until its gate passes.
-
-10. **The anti-pattern you are planning against: fast and furious.** Grab an
-    architecture, plug in data without examining it, start running, iterate until
-    something works. The result is either mysterious success (cannot be reproduced) or
-    mysterious failure (cannot be debugged). The plan is what remains after deciding
-    mysterious success is no better than mysterious failure.
+The output of WWKD is not "a plan you follow." It is the round's **axis set +
+milestone map** — the bounded problem the L1 orchestrates this turn.
 
 ---
 
-## Planning Protocol
+## The pair: wwkd × godspeed
 
-### Phase 0 — Data Walk
-
-Before any step is written, enumerate and inspect:
-
-- **Inputs:** what files, what shape, what content, how many rows, what outliers
-- **External APIs:** what do they actually return (probe, don't read docs alone)
-- **Existing code:** what behavior does it already implement that the plan interacts with
-- **Known constraints:** rate limits, schema quirks, load-bearing invariants
-
-Produce a **Data Walk artifact** (markdown or notebook) before the plan itself lands.
-If the spec promises something the data doesn't support, pause and reconcile — do not
-plan around a false premise.
-
-### Phase 1 — Skeleton Sequencing
-
-Write the plan as a sequence of milestones, each one:
-
-- **End-to-end from day one.** Every milestone produces a runnable artifact that
-  exercises the full pipeline at reduced scale.
-- **One new capability per milestone.** Not three.
-- **Ordered by least disruption.** Milestone N's failure modes do not mask milestone
-  N-1's. If they might, swap the order.
-- **Verification gate baked in.** Each milestone ends with a specific command + expected
-  output. If the gate can't be stated, the milestone isn't well-defined.
-
-The skeleton milestone (Milestone 1, always) is the simplest end-to-end thing that
-could possibly work — typically one input, one transformation, one output, hard-coded
-where not essential, run on toy data.
-
-### Phase 2 — Overfit Milestone
-
-Milestone 2 is always: **solve exactly one minimal real instance end-to-end.** One
-SKU, one week, one query, one file. Not a subset, not a sample — one. The success
-criterion is bit-for-bit correctness on that instance, not plausibility.
-
-Why this is its own milestone: it's the capacity smoke test. If the pipeline can't
-solve one, it won't solve many. Every subsequent milestone assumes Milestone 2 passed.
-
-### Phase 3 — Generalization Order
-
-Subsequent milestones widen one axis at a time:
-
-- More SKUs (without changing time range)
-- More time (without changing SKU set)
-- More endpoints (without changing data scope)
-
-Each widening is reviewed against its own gate before the next one begins. Breaking an
-earlier milestone's gate is a blocker — fix before widening further.
-
-### Phase 4 — Polish & Squeeze
-
-Last. Only after correctness is proven across the generalized range. Includes:
-
-- Artifact formatting
-- Reporting polish
-- Performance tuning
-- Ergonomics / CLI affordances
-
-No polish milestone runs before its correctness milestone has passed. Polishing a
-wrong answer just produces a pretty wrong answer.
+- **wwkd bounds the L1.** The axes map keeps multi-axis optimization
+  tractable: the L1 is given a turn to orchestrate, not a chaotic,
+  impossible problem. Exploration happens inside the map, not instead of it.
+- **godspeed frees the L2.** Each dispatched L2 assignment carries exactly one
+  `directive.md` prefix — the quintessential form for unbounded capability
+  expression. No rigid goal is attributed to an L2; the axis improvement is
+  the direction, the directive is the posture.
+- **The trilogy is L1/judge-only.** `filter.md` and `velocity.md` are loaded
+  only by the judge seat. L2s never see them; neither does any other role.
 
 ---
 
-## Plan Artifact Format
+## The mapping pipeline
 
-Every plan produced under this skill has:
+### 1. Data walk (always first)
+Inspect the thing itself — inputs, outputs, telemetry, local diff — before
+naming anything. A map drawn from the spec instead of the data plans against
+a fiction.
 
-```markdown
-# Plan — <title>
-**Spec:** <path to spec>  **Author:** wwkd posture, <date>
+### 2. Name the axes (dynamic, per task)
+Axes are **minted for the task at hand**: never fixed, never a standing
+taxonomy, **never attached to an agent**. Every declared axis names its
+measurement (`Axis.measurement`, declared with the round's axis set):
 
-## Data Walk
-- What I looked at, what I found, what surprised me
-- Any spec/reality divergences
+- `executable` — measured by the runtime in bounded scratch copies of
+  baseline and candidate trees; computed direction-aware delta, advisory
+  seat scores never override a computed regression.
+- `subjective` — improvement admitted only through the recorded symmetric
+  argument (for and against, role-appropriate evidence); one-sided claims
+  are clamped to baseline and flagged.
+- `evidence` — computed by the judge from typed handoff evidence; native
+  path only, rejected at admission elsewhere.
 
-## Milestones
+**Unmeasurable axes are not axes.** An axis without a measurement declaration
+fails plan admission — the verification-gate stance applied to the axis set
+itself. A check that fails to run measures UNKNOWN: never regression cover,
+never a phantom gain; UNKNOWN on a material axis blocks admission as
+`INSUFFICIENT_EVIDENCE`.
 
-### M1 — Skeleton (end-to-end, toy)
-**Does:** <one sentence>
-**Gate:** <command + expected output>
-**Touches:** <files>
-**Out-of-scope:** <explicit carve-outs>
+### 3. Group axes into milestones
+Axes that co-move land in the same milestone. Order by **least disruption** —
+each milestone remains runnable in isolation, each move Pareto-checkable on
+its own:
 
-### M2 — Overfit one real instance
-**Does:** <one sentence, naming the single instance>
-**Gate:** <bit-for-bit expected output>
-...
+1. **Skeleton** — one end-to-end shape before capacity.
+2. **Overfit one case** — prove exactly one concrete path, bit-for-bit.
+3. **Generalize** — widen one axis at a time; a broken earlier gate blocks widening.
+4. **Polish** — last, only after correctness is proven across the range.
 
-### M3..Mn — Generalize one axis per milestone
+### 4. Hand to the L1 dispatcher
+The L1 assigns milestones and axis groups to L2 seats from the round's
+context — the axes themselves belong to no agent. Each dispatched assignment
+gets exactly one directive prefix and one terminal marker. The L1 orchestrates
+**and** executes (I2); it never blocks waiting on lanes, never spawns a second
+L1 (I1).
 
-### M_final — Polish
-```
+### 5. Assimilate and remap
+The L1 collects results, the judge computes measurements per axis, and the
+next turn's WWKD plan re-declares the axis set: **stable within a round, free
+to evolve between rounds, never frozen at Phase 0.** Every judged round
+writes one WWKD plan before specialists are dispatched.
 
-Each milestone is reviewable and mergeable in isolation.
+---
+
+## L2 roster (reference seats)
+
+The L1 dispatches from the authored roster (e.g. `ufo-fsd-alpha/.omp/agents/`).
+Seats are capabilities, not axis owners:
+
+| Seat | Charge |
+|---|---|
+| planner | Mandatory planner seat each judged round — data walk, skeleton, one-case overfit, then generalize |
+| executor | Scoped implementation with behavioral evidence |
+| reviewer | Surgical correctness review of a bounded change |
+| critic | Adversarial approach review against the round's declared axes and invariants |
+| sentinel | Adversarial security review of a bounded change |
+| scout | Read-only codebase research for a bounded unknown |
+| connector | Cross-axis pattern finder — mandatory in every proposal wave (native) and every PROPOSE phase after Round 0 (fleet) |
+| distiller | Deduplicate complete proposals before Pareto judgment |
+| labrat | Bounded empirical probe for one falsifiable hypothesis |
+| mutation-tester | Mutate-run-revert probe for missing behavioral coverage |
+| revenger | Reverse-engineer undocumented local behavior and original intent |
+| scribe | Evidence and gate reporter; never a shipping authority |
+| simplifier | YAGNI deletion that preserves verified behavior |
 
 ---
 
 ## Refusals
 
-This skill refuses to produce:
+This posture refuses to produce:
 
-- **Plans that skip Phase 0.** If the data walk hasn't been done, the plan is
-  planning against a fiction.
-- **Plans with a "write everything then test" milestone.** That is fast-and-furious.
-- **Plans that invent novel architecture where established patterns exist.** Name
-  the reference implementation or the existing module. If there isn't one, flag
-  explicitly that this step carries invention risk.
-- **Plans without verification gates.** A milestone without a gate is a wish.
-- **Plans whose first milestone is scaffolding a framework.** The first milestone
-  solves a user-visible slice of the problem end-to-end, however tiny.
+- **Fixed axis taxonomies** — axes are minted per task, per round.
+- **Agent-attached axes** — seats are assigned by the L1; axes belong to the round.
+- **Rigid goals for L2s** — direction yes, attributed goal no; the directive is the form.
+- **Unmeasurable axes** — no measurement declaration, no axis.
+- **Standalone planning** — outside ufo there is no dispatcher to hand the map to.
 
 ---
 
-## When To Use
+## Conceptual frame (operator)
 
-Trigger the skill when:
-- User has an approved spec (brainstorming/design complete) and needs an implementation plan
-- User invokes `/wwkd`, says "what would karpathy do", "plan this", "break this down"
-- User is about to start a non-trivial feature and wants the sequencing right before coding
-- Planning a refactor where silent-failure risk is real (reconciliation, migrations,
-  data pipelines, training loops, anything whose wrong answer looks right)
+> "Frontier shows itself by ceasing to move."
 
-Do NOT use when:
-- The task is a one-line change — planning overhead exceeds the work
-- Spec is still in flux — resolve the design before writing an implementation plan
+> "Pareto-optimal iteration at velocity, with no rigidly defined goal."
+
+> "Quality cannot be defined, but it can be recognized."
 
 ---
 
-## Relationship to Other Skills
+## Source excerpts
 
-- **ufo** invokes wwkd as the planning posture before each judged round:
-  `/ufo <spec>` → local review → WWKD plan → judged round.
+> "Neural net training fails silently." — Karpathy, *A Recipe for Training
+> Neural Networks*, 2019. The epigraph of the posture: silent failure is what
+> the axes map exists to surface.
 
-## Source Excerpts
-
-> "Neural net training fails silently." — Karpathy, *A Recipe for Training Neural
-> Networks*, 2019. The epigraph of the skill.
-
-> "Code is free, ephemeral, malleable, discardable after single use." — Karpathy, 2025
-> Year in Review.
-
-> "Name the axes, iterate cheap in parallel, keep moves that improve any axis and harm
-> none, don't aim — let the frontier walk itself." — VeigaPunk directive, the
-> Pareto-walk compression of the same posture.
+> "Code is free, ephemeral, malleable, discardable after single use." —
+> Karpathy, 2025 Year in Review. The map and the milestones are the permanent
+> artifact; the code under them is disposable.
