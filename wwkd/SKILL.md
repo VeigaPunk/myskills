@@ -19,6 +19,12 @@ Planning is a disciplined response to **silent failure**. The cheapest bugs to f
 the ones you catch before the next layer lands on top. This skill is the posture that
 catches them.
 
+Source material lives in the external authoring wiki
+(`~/wikillm/llm-wiki/wiki/karpathy/` — notably
+`karpathy-recipe-neural-networks.md` and `builder-philosophy.md`). That path
+is the authoring source, not a runtime dependency: it is absent on fleet
+hosts and this SKILL.md is the self-contained runtime compression.
+
 ---
 
 ## Core Principles (non-negotiable)
@@ -200,23 +206,23 @@ Trigger the skill when:
 
 Do NOT use when:
 - The task is a one-line change — planning overhead exceeds the work
-- Spec is still in flux — route to brainstorming/heuer-planning first
+- Spec is still in flux — resolve the design before writing an implementation plan
+- User wants vibe-code throwaway glue — that regime is explicitly outside wwkd's remit
+  (see the external authoring wiki's `builder-philosophy.md` on
+  code-is-ephemeral; wwkd is the center-of-stack posture, not the glue posture)
 
 ---
 
 ## Relationship to Other Skills
 
-- **heuer-planning**: pre-spec brainstorming; produces the approved design that wwkd
-  turns into a plan. wwkd assumes the spec exists.
-- **xbgst / xbt / xgs**: orchestration wrappers that can invoke wwkd as the planning
-  phase after a spec review. Compose: `/xbgst <spec>` → review → `/xbgst /wwkd` → plan.
-- **superpowers:writing-plans**: generic plan-writing; wwkd is the opinionated variant
-  that enforces data-walk-first, overfit-one, least-disruption ordering.
+- **ufo** runs the wwkd planning stance every round (run-logic §5 is normative);
+  this skill is its self-contained compression — WWKD plan → local specialist
+  work → Pareto judgment.
 
 ## Source Excerpts
 
 > "Neural net training fails silently." — Karpathy, *A Recipe for Training Neural
-> Networks*, 2019. The epigraph of the skill.
+> Networks*, 2019.
 
 > "Code is free, ephemeral, malleable, discardable after single use." — Karpathy, 2025
 > Year in Review.
