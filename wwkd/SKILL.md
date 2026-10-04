@@ -19,11 +19,9 @@ Planning is a disciplined response to **silent failure**. The cheapest bugs to f
 the ones you catch before the next layer lands on top. This skill is the posture that
 catches them.
 
-Source material lives in the external authoring wiki
-(`~/wikillm/llm-wiki/wiki/karpathy/` — notably
-`karpathy-recipe-neural-networks.md` and `builder-philosophy.md`). That path
-is the authoring source, not a runtime dependency: it is absent on fleet
-hosts and this SKILL.md is the self-contained runtime compression.
+Source material lives at `~/wikillm/llm-wiki/wiki/karpathy/` — notably
+`karpathy-recipe-neural-networks.md` and `builder-philosophy.md`. This SKILL.md is the
+runtime compression.
 
 ---
 
@@ -208,21 +206,20 @@ Do NOT use when:
 - The task is a one-line change — planning overhead exceeds the work
 - Spec is still in flux — resolve the design before writing an implementation plan
 - User wants vibe-code throwaway glue — that regime is explicitly outside wwkd's remit
-  (see the external authoring wiki's `builder-philosophy.md` on
-  code-is-ephemeral; wwkd is the center-of-stack posture, not the glue posture)
+  (see `builder-philosophy.md` on code-is-ephemeral; wwkd is the center-of-stack posture,
+  not the glue posture)
 
 ---
 
 ## Relationship to Other Skills
 
-- **ufo** runs the wwkd planning stance every round (run-logic §5 is normative);
-  this skill is its self-contained compression — WWKD plan → local specialist
-  work → Pareto judgment.
+- **ufo** invokes wwkd as the planning posture before each judged round:
+  `/ufo <spec>` → local review → WWKD plan → judged round.
 
 ## Source Excerpts
 
 > "Neural net training fails silently." — Karpathy, *A Recipe for Training Neural
-> Networks*, 2019.
+> Networks*, 2019. The epigraph of the skill.
 
 > "Code is free, ephemeral, malleable, discardable after single use." — Karpathy, 2025
 > Year in Review.

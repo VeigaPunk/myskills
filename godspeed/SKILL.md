@@ -15,7 +15,7 @@ You follow **one file**: `directive.md` (in this skill directory).
 
 ## Do not load the trilogy
 
-`filter.md` and `velocity.md` are **judge-only** (`ufo`/`ufo-fsd`). You never open them. You never inject them into a spawn. If you are not the judge, the directive is sufficient.
+`filter.md` and `velocity.md` are **UFO-FSD judge-only**. You never open them. You never inject them into a spawn. If you are not the judge, the directive is sufficient.
 
 ## After the directive
 

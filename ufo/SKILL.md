@@ -26,11 +26,7 @@ Never spawn yourself. Never create or admit a second L1 (I1).
 1. **Posture:** load the authored `ssot/godspeed-core/directive.md` once.
    Exact, digest-bound directive bytes already present at the start of the
    assignment satisfy this load; do not expand the Godspeed skill or read a
-   second mirror into the same context. A minted `/skill:godspeed`
-   invocation line (fleet L1 second line, L2 leading line) is the load
-   mechanism itself, not a redundant expansion — this clause bans manual
-   re-expansion after the bytes are already loaded, never the minted
-   invocation. Host and packaged copies
+   second mirror into the same context. Host and packaged copies
    (`references/godspeed-core/directive.md`, repo-root
    `godspeed-core/directive.md`, the bundled crate copy, and every packaged
    skill target — the list is illustrative, not exhaustive)
@@ -42,12 +38,11 @@ Never spawn yourself. Never create or admit a second L1 (I1).
    logic. The shape is the contract; the substrate is interchangeable.
 3. **Planner stance:** load skill `wwkd` (data walk first, skeleton, overfit
    one real case, least-disruption generalization, verification gate per
-   milestone). Axes are dynamic on the fleet-mission path: the L1 declares
-   the round's axis set in its WWKD plan per round, informed by the planner
-   stance or seat; the set is externally visible, stable within that round,
-   free to evolve between rounds, and never frozen at Phase 0. On the judged
-   native path the axis set is frozen at launch from `config.axes`. Every
-   judged round writes one WWKD plan before specialists are dispatched.
+   milestone). Axes are dynamic: the L1 declares the round's axis set in its
+   WWKD plan per round, informed by the planner stance or seat; the set is
+   externally visible, stable within that round, free to evolve between
+   rounds, and never frozen at Phase 0. Every judged round writes one WWKD
+   plan before specialists are dispatched.
 
    run-logic §5 is the normative statement of the planner stance. Loading
    an external `wwkd` skill is enrichment where the host provides one;
@@ -63,11 +58,7 @@ invocation is injected only once and stays ahead of dispatch overlays
 substrates, not as repeated prompt payloads.
 
 Only the judge seat may load `godspeed-core/filter.md` and `velocity.md`;
-no runtime mechanism loads them and no other role ever does. On an unjudged
-fleet mission the L1 is that judge seat: load all three Godspeed files before
-the first verdict. The dispatcher mints this duty into each fleet prompt
-(`scripts/fleet-dispatcher.mjs` startup doctrine); judged-native seats inherit
-the directive only.
+no runtime mechanism loads them and no other role ever does.
 
 
 ## Advisory mode (no substrate present)
@@ -140,8 +131,7 @@ bytes. `complete` is idempotent — a second call is a no-op that keeps the
 original note — and also settles stopped rows.
 Native trials are host-owned: Main finishes its artifact and all reachable
 tasks, the interactive session shuts down gracefully, and the launcher
-persists the collection/judgment outcome or an honest rejection before
-retiring the pane. Main and L2
+persists collection and Rust judgment before retiring the pane. Main and L2
 must not kill or complete that pane before collection. Completion after a
 rejected handoff retains the manifest row as history (bounded to the 50 most
 recent completed rows in mission-sequence order) and releases pane capacity;
@@ -157,12 +147,10 @@ authority. `--text-file` reads at most 64 KiB and tolerates one trailing
 newline; `peek` defaults to 80 lines, clamped to 1–400; `steer` and `peek`
 both require a live mission (`MISSION_NOT_LIVE`).
 
-Native trial launches default to the interactive OMP TUI; when
-`sighting.autoRegisterInvokedNativeTrial` is enabled they hand off to a
-named Sighting fleet window. `--headless` opts out of the TUI and
-`--no-wall` keeps a visible in-process TUI — neither is a fallback when
-the wall is busy. A failed wall handoff stops before hidden dispatch;
-preparation-only invocations launch nothing.
+Native trial launches default to the interactive OMP TUI and automatically
+open the Sighting wall in a named fleet window. Headless execution is an
+explicit opt-out, not a fallback when the wall is busy. A failed wall handoff
+stops before hidden dispatch; preparation-only invocations launch nothing.
 
 ## Invariants (never violated, any round, any substrate)
 
@@ -191,7 +179,7 @@ The normative text lives once in `references/run-logic.md` §0. Digest:
 - **One authority.** You are the sole L1 orchestrator and working integrator on
   this substrate. The canonical Rust runtime is the sole judge. Never spawn a
   second L1 or another judge.
-- **Planner-first.** L1 writes exactly one WWKD plan before each round.
+- **Planner-first.** L1 writes exactly one WWKD plan before each judged round.
   While local specialists run, L1 performs its own baseline and integration
   work; it does not idle.
   The plan is evidence: the typed `ufo-round-plan-v1` artifact's digest
@@ -283,10 +271,10 @@ implies:
   exhaustion — never silently change models. Each hop honors the exact
   effort declared for that hop in the typed chain: role-level reasoning
   intent, requested effort, resolved effort, and provider-observable
-  execution settings are recorded separately, and an unobservable
-  setting is an explicit typed outcome (`effort_unverifiable`) — never
-  assumed compliance, never silent clamping credited as exact effort
-  (T07).
+  execution settings are recorded separately, and an unsupported or
+  unobservable setting is an explicit typed outcome (`effort_unsupported` /
+  `effort_unverifiable`) — never assumed compliance, never silent clamping
+  credited as exact effort (T07).
 - Each non-Main `session_init` must echo the full requested route,
   including its effort suffix; `model_change` and served assistant
   observations must match the base resolved model id without the suffix,
@@ -310,53 +298,82 @@ attested in the effective launch record. Admission relies on observable
 actions and artifacts; hidden reasoning is never required evidence. No
 model-specific reasoning-language instruction is injected.
 
-OpenCode and `opencode-go` are not automatic transports for
-the OMP native profile — `opencode-go/*` selectors may still appear as
-ordinary typed cascade hops, never as a substrate. The explicit `opencode` command surface remains one of
+OpenCode and `opencode-go` are not automatic transports or model providers for
+the OMP native profile. The explicit `opencode` command surface remains one of
 the seven supported local adapters and still delegates to the canonical Rust
 runtime; this routing policy does not mutate the installed OpenCode product.
 A complete native topology contains the frozen proposal wave plus Main,
 planner, distiller, and labrat: `proposal_wave_size + 4`, at most 20 seats.
 Declared dispatch concurrency is the wave size plus one slot reserved for the
 nested labrat; exceeding the 32-seat ceiling fails the launch, never clamps.
-A failed proposal seat remains in that frozen topology as a typed
-`lane_failure` event (run-logic §4.2); the other proposal seats, executor-owned probe, and distiller
-attempts continue. An admission-critical seat (Main, planner, `probeParent`, labrat, or
+A failed proposal seat remains in that frozen topology as typed unavailable
+evidence; the other proposal seats, executor-owned probe, and distiller
+attempts continue. A critical seat (Main, planner, `probeParent`, labrat, or
 distiller) failure invalidates judgment but
 never suppresses later reachable dispatch or its provenance. An all-proposal
 failure, missing provenance, transcript mismatch, truncated assignment,
 duplicate or misplaced Godspeed marker, contract drift, or topology mismatch
-invalidates the native handoff. Gemini is not an implemented UFO route
-except under an explicit operator-directed provider exemption (the nc4
-experiment admits `google-antigravity/*` only).
+invalidates the native handoff. Gemini is not an implemented UFO route.
 
 ### Fleet missions — NC2 standard (`nightcall`)
 
-NC2/`nightcall` is the standard shape of every fleet dispatch, not one
-mission's private format. The protocol — enqueue default, L0 map then batch
-frontier, global-alias routing, lane families, prompt and receipt contract —
-is normative in `references/run-logic.md` §8.2. Planning index: at most 32
-live L1s, at most 100 L2 members per L1 in sequential 16–100 lane waves,
-`task.maxConcurrency: 0`, and bare global-alias routing (default
-`missionFormat.l1Alias` = `m_daybreak`). Alias examples and the observed NC2
-split live in §8.2 item 3.
+NC2/nightcall is the standard shape of every fleet dispatch, not one mission's
+private format: the dispatcher's enqueue default is the canonical overlay
+`config/mission-nightcall.yml` with an 8-round iteration default
+(`sighting.dispatch.missionFormat`). Every L1 — fleet mission or native-trial
+Main — selects a bare alias that resolves in the fd-bound global OMP config;
+`missionFormat.l1Alias` supplies only the terminal `m_daybreak` default
+(`openai-codex/gpt-daybreak-blue-latest:max`). `m_swe` (`devin/swe-2:max`)
+and `m_kimi_devin_high` (`devin/kimi-k3:high`) are terminal examples, not a
+project allowlist. The observed NC2 split uses `m_swe` for crates/tests and
+`m_daybreak` for tooling/docs/packages/evidence/verify; an LSP-integration
+Nightcall uses `m_kimi_devin_high`. A mission spec selects an alias globally,
+never a concrete route; L2 routing and cascades are global-alias-only. L0 maps
+the whole fleet first (one WWKD
+map, disjoint scopes), then batch-enqueues the independent self-iterating L1
+frontiers — crates, tooling, tests, docs, packages, evidence, verify — each
+with `requestedRunners: 1` and 8-round iteration. Verify is a concurrent
+read-only frontier; later iterate/integration receipts may add dependencies.
+Every mission is one fresh L1 whose prompt begins
+`/skill:ufo`; every fresh L2 task text begins `/skill:godspeed` — the
+invocation, never bare shorthand. L0 is the sole operator↔mission interaction
+and monitor surface: it steers and monitors, never judges inside a mission.
+One mission has exactly one L1; at most 32 live L1s
+globally (`sighting.dispatch.maxConcurrentL1`). Each L1 fields at most 100
+atomized L2 members, delivered as sequential 16–100 lane waves — wave N+1
+launches only as wave N settles. `task.maxConcurrency: 0` everywhere: the OMP
+host adds no secondary cap, and the finite UFO bounds (100 members per L1 /
+16–100 per wave) stand alone, under the configured global runner ceiling. The
+L1 runs on the OMP-native `task`/Hub transport, executes its own work,
+self-iterates and self-improves, discovers axes dynamically per round, and
+atomizes real work into those waves. The standard lane families
+are crates, tooling, tests, docs, packages, evidence, and verify; the exact
+subset follows the disjoint work decomposition, never padding, and the verify
+lane is read-only integration unless it is explicitly given an ownership
+scope. Prompts lead with `/skill:ufo`,
+carry the exact directive bytes and an explicit scope/acceptance, produce one
+report and receipt per round, and end with exactly one terminal `| godspeed`.
+Contract freeze and same-identity reroute are unchanged. Normative statement:
+`references/run-logic.md` §8.2.
 
-A swarm wave is a dispatch shape for unjudged fleet missions, never a
-session mode or judged-round topology. The kimi `/swarm` toggle UX is not
-ported; only its one-call dispatch semantics are. A wave procs only for
-unjudged scope with enough same-shape items to fill the configured band:
-16–100 per wave; `minLanes` 64 is the declared, ungated swarm-round floor
-(built-in band-less default 2). Judged rounds keep their frozen proposal
-topology; wave output is advisory evidence, never a `Proposal`. The
-mechanics and refusal codes are normative in `references/run-logic.md` §4.3.
+A swarm wave is a dispatch shape for unjudged fleet missions — never a
+session mode and never a judged-round topology. The kimi `/swarm` toggle UX
+is not ported; only its one-call wave-dispatch semantics are. The election rule: a wave
+procs only when the work is unjudged fleet scope AND the plan yields
+enough same-shape items to fill the configured wave band (16–100 under
+repo policy; `minLanes` — default 2 — under a band-less policy); judged rounds keep the frozen proposal
+topology, so a wave inside a `NativeRoundHandoff` session is invalid, and
+wave output is advisory evidence only, never a `Proposal`.
 
-The unjudged fleet L1 is its own mission-internal Pareto integrator, emitting
-no canonical Rust verdict (I1). It runs WWKD-planned, axes-governed rounds:
-plan, dispatch, judge settled lanes, ship accepted work, then continue or
-stop honestly (saturated / blocked / budget). One session runs one round;
-`continue` mints a successor (§4.3). The L0 monitor duty — drift detection,
-digest rebinding, repending, and liveness — is specified in run-logic §8.1
-(`scripts/ufo-l0-monitor.mjs`, L0-owned).
+On an unjudged fleet mission the L1 is an autonomous self-iterating
+orchestrator that performs its own mission-internal Pareto integration over
+settled lane evidence and emits no canonical Rust verdict (I1). The mission is
+a loop of WWKD-planned, axes-governed waves — plan, dispatch, judge settled
+lanes against the round's axes, ship accepted work, and loop — never a one-shot
+task. It stops honestly (saturated / blocked / budget); declared terminal
+saturation uses receipt `iteration.decision: stop` with a reason naming saturation;
+`stop` alone is never a canonical Rust convergence verdict. The L0 monitor duty —
+detecting drift-blocked rows, rebinding digests, repending, and re-verifying liveness — is specified in run-logic §8.1 (`scripts/ufo-l0-monitor.mjs`, L0-owned).
 
 1. Declare the wave as a spec — saved file, stdin (`--spec -`), or an
    inline literal (`--spec-json <json>`), so an operator or L1 writes the
@@ -371,49 +388,72 @@ digest rebinding, repending, and liveness — is specified in run-logic §8.1
    entry per resume lane. kimi's `/swarm` slash layer parses only
    `on|off|<prompt>` (a session-mode toggle plus a free-form task); the
    declaration source is what an OMP operator surface ports, not a new
-   argument grammar. Every fresh subagent session starts with
-   `/skill:godspeed` — the renderer and `task` hook enforce it, while
-   eval-kernel `agent()`/`workpool()` callers prepend it themselves.
-   Resume `hub send` is continuity, not a new session (§4.3).
+   argument grammar. Every fresh subagent session MUST receive
+   `/skill:godspeed` as the leading line of its task text. The swarm-wave
+   renderer injects it into every spawned lane; the
+   `.omp/hooks/pre/ufo-godspeed-inject.js` `tool_call` hook injects it into
+   every `task`-tool dispatch (idempotent — an already-invoked prompt
+   is left untouched). Dispatch surfaces that bypass `tool_call`
+   (eval-kernel `agent()`/`workpool()`) must still prepend it themselves.
+   A trailing `| godspeed` marker is envelope-only and loads nothing.
+   Resume `hub send` messages are not new sessions — never add the
+   invocation there.
 2. Items expand over `{{item}}` placeholders in `spec.template`, or carry a
    per-item `prompt`. Expanded prompts must be pairwise distinct — a
    duplicate fails the wave before any lane spawns; never dedupe silently.
-3. The member ceiling (`sighting.dispatch.swarm.maxLanes`) is 100 by repo
-   policy, counting spawns and resumes; a spec `maxLanes` may tighten it.
-   It is independent of host `task.maxConcurrency`, native profile
-   `concurrencyCeiling`, and the global runner ceiling (§4.3). The repo
-   wave band is 16–100 (`waveMinLanes`/`waveMaxLanes`), with
-   `too_few_lanes`/`wave_too_wide` refusals. `minLanes` 64 is a declared
-   swarm-round floor, not a planner gate; in band-less policy the built-in
-   minimum is 2. Resume-only waves are exempt; a spec cap below the wave
-   floor fails `impossible_band` (§4.3). Spawn items may declare `axes`
-   (1–8 names, ≤256 bytes each) and `milestone`; spec-level values are
-   defaults, item-level wins, and resume lanes inherit the spawn binding
-   (§4.3).
+3. The member ceiling is the canonical swarm population limit counting spawn
+   items and resumes together: 100 by repo policy
+   (`sighting.dispatch.swarm.maxLanes`; the planner's `MAX_SWARM_LANES` hard
+   bound backs that cap), and a spec `maxLanes` may tighten it again. It is
+   independent of the OMP host `task.maxConcurrency` (0 everywhere — no host
+   secondary cap) and of the configured global runner ceiling.
+   A wave carrying spawn lanes must also land inside the configured wave
+   band — `sighting.dispatch.swarm.waveMinLanes`/`waveMaxLanes` (repo:
+   16–100) — else `too_few_lanes`/`wave_too_wide`; a wave whose lanes are
+   all resumes is exempt. A config policy declaring no wave band falls back
+   to the swarm band (`minLanes`/`maxLanes`), so the band-less floor is
+   `minLanes` (default 2 — the kimi-parity minimum).
 4. Every spawn lane carries an explicit taxonomy role — the ten proposal
    roles (`scout`, `reviewer`, `critic`, `connector`, `sentinel`,
    `executor`, `mutation-tester`, `revenger`, `simplifier`, `scribe`).
    planner, distiller, labrat, and Main are frozen-topology seats, never
    swarm lanes. There is no per-lane `model` param: kimi's secondary-model
    cascade collapses to the lane role's pinned route as resolved from the
-   global OMP table (`AGENTS.md` Routing authority — a dated observation of
-   the live seat table). A fleet's dispatch
+   global OMP table (`AGENTS.md` Routing authority — flash / grok / composer
+   aliases). `devin/swe-2` is never a swarm lane. A fleet's dispatch
    binding MUST NOT pin lane routes over this table: the global alias table is
    the only routing authority, for every mission.
-   Swarm members are leaf by default: no delegation or background jobs.
-   Omit the `spawns:` key for a leaf; `spawns: []` collapses to undefined
-   and yields wildcard `*` when `task` is in tools — never use it as the
-   leaf spelling. `agents/executor.md` alone permits `spawns: labrat`.
-   Frontmatter `tools:`, `jobs` as a `hub` operation, and session-scoped
-   `tools.approval` semantics are normative in run-logic §4.3.
+   Swarm members are leaf by default: no `task`/jobs tooling, no delegation,
+   no background jobs; executor is the explicit bounded exception below. Leaf-ness is enforced today by the planner's role
+   taxonomy plus member instructions — and by the OMP spawn-policy
+   default: a member card with no `spawns:` key resolves to spawn policy
+   disabled (leaf-by-default). The live OMP binary consumes frontmatter
+   `tools:` (an allowlist; `yield` auto-added, `hub` auto-added to any
+   non-read-only list) and `spawns:` — but `spawns: []` collapses to
+   undefined and yields wildcard `*` when `task` is in tools, so `[]` is
+   a footgun, never the leaf spelling. Exception: `agents/executor.md`
+   declares `spawns: labrat` — the executor swarm role is not a leaf.
+   `jobs` is a `hub` op, not a tool name. OMP has no per-agent
+   `tools_deny`; `tools.approval` deny policies are session-scoped and
+   would bind the L1 itself (kimi parity: the `coder` profile lacks
+   `Agent`/`AgentSwarm`). The wave cap is its own ceiling, distinct
+   from the ordinary "up to 16 L2 lanes per L1" fan-out doctrine.
 5. A resume lane is `{resume: <agentId>, message}` (`prompt` is an
    accepted alias) — the OMP mapping is `hub send` to the parked agent id,
    which revives the same agent with its transcript and role. A resume
    never carries a new `role`/`agent`; that would mint a replacement
-   identity (I6). Ownership is fail-closed against the wave registry or
-   `spec.priorRegistry`: unknown ids fail `resume_unknown_member` before
-   spawn; re-pointing a recorded handle fails `conflicting_assignment`.
-   Registry persistence and record mechanics are normative in §4.3.
+   identity (I6). Resume ownership is fail-closed at plan time: the id
+   must be a member of the wave's own registry or a declared
+   `spec.priorRegistry` (≤16 entries, root-relative), else
+   `resume_unknown_member` before any lane spawns — membership proves
+   ownership, not liveness. `run` persists the wave's
+   `ufo-swarm-registry-v1` at `<reportDir|.ufo/scopes/<wave>>/swarm-registry.json`
+   before emitting the payload; spawn members land with `agentId: null`
+   and `record --registry <path> --assignments '{"<name>": "<agentId>"}'`
+   fills them post-spawn (same-id idempotent; a re-point dies
+   `conflicting_assignment`). On id collision the wave's own registry
+   wins; resume rows recover the owning member's name and persisted
+   `item`.
 6. The kimi 5-per-700ms launch ramp is internal pacing of one AgentSwarm
    call. On OMP the single `task` call is the wave; the harness queues
    lanes beyond its concurrency window. The ramp constants are recorded in
@@ -464,12 +504,7 @@ Sekhmet/L3 is shelved by operator doctrine. Do not dispatch sparks or
 use L3 as a route, fallback transport, proposal seat, or prerequisite for OMP
 progress. The retained evidence-only implementation and its declared
 64-worker ceiling are compatibility data, not permission to launch workers;
-its stored chain is the Rust literal `CANONICAL_L3_CHAIN`
-(`crates/ufo-core-runtime/src/l3_swarm.rs`), supplied by
-`L3EvidenceConfig::canonical()` — `config/ufo.json` `l3Evidence` carries only
-`transport`/`authority`/`concurrencyCeiling`, and a `chain` field there is
-forbidden project model authority the sync gate rejects. All of it stays
-inactive.
+its stored chain lives in `config/ufo.json` `l3Evidence` and stays inactive.
 No spark output enters a `NativeRoundHandoff`.
 
 The launcher snapshots the Rust-computed contract hash before OMP dispatch.
@@ -503,20 +538,19 @@ Then the round loop, per `references/run-logic.md` §4–§8 (local ship: §10):
 3. **Judge** — name axes, score proposals, accept/reject with reasons.
    Aggregate, don't flatten: the verdict is a synthesis, not a vote.
 4. **Ship locally** — accepted work lands in the current working tree.
-   Fleet missions then commit it path-scoped and push to `origin` (the
-   cursor remote on the canonical checkout; a local bare origin on
-   ephemeral fleet clones): that push is the audit trail, not a publish.
+   Fleet missions then commit it path-scoped and push to the cursor
+   `origin` remote: that push is the audit trail, not a publish.
    Public publishing, deployment, and non-origin remotes stay
    operator-owned.
 5. **Stop check** — convergence, emitted as `saturated`
    (`round_is_clean` per §8: sound round, zero accepted, no queued regression
-   refinement, zero capacity/`lane_timeout`/`quality_degraded`/`unavailable`), breaks. An unsound round halts as `blocked`.
+   refinement, zero capacity/`lane_timeout`/`quality_degraded`/`unavailable`), breaks. An unsound round halts as `blocked` (exit 2).
    `interrupted` (SIGINT/operator halt checkpointing a live round),
    `honesty_brake` (budget exhaustion), and `authority_boundary`
    (membrane-touching accepts awaiting operator sign-off, spec 06) are
    emitted (normative: `references/run-logic.md` §1 and §8).
    When the round cap is the winning stop, it lands as
-   `budget_halt`/`round_cap`. Saturation, an enabled cost brake, or
+   `budget_halt`/`round_cap` (exit 2). Saturation, an enabled cost brake, or
    an authority boundary may preempt it under §8; none is task completion.
    Saturation is search exhaustion under a clean round, not goal completion;
    the mission reports goal status independently, and a second native round
@@ -531,7 +565,7 @@ Then the round loop, per `references/run-logic.md` §4–§8 (local ship: §10):
    `budgets.tokensPerMission` in `config/ufo.json` (0 = unlimited; the
    key absent is config-invalid), aggregated per seat into the handoff
    `cost_ledger`. Exhaustion (actual or projected) stops the loop as
-   `honesty_brake` unless the round itself saturates (saturation is
+   `honesty_brake` (exit 2) unless the round itself saturates (saturation is
    checked first); a fired brake is recorded, never convergence or completion.
    `interrupted` marks externally-stopped checkpoints.
 
@@ -546,7 +580,7 @@ report the lane unavailable.
 A lane that exceeds its contract deadline (`nativeProfiles.omp-native-v1.deadlines`)
 is `lane_timeout` telemetry: never a capacity event, never a chain advance.
 Non-critical seats report unavailable and the wave continues with the late
-output inadmissible; critical seats (Main, planner, labrat,
+output inadmissible; critical seats (Main, planner, probeParent, labrat,
 distiller) get the single same-identity same-route retry granted by re-charter
 D1a, then the round is invalid for judgment while collection and provenance
 continue. Dispatch is idempotent per wave: a resumed Main collects a
@@ -571,9 +605,9 @@ not passed.
 
 Do not present deterministic fixture output as native host execution. Fixture
 proposals are local test data and must be labeled as such.
-Do not inherit Grok's direct-to-main policy for public remotes — the
-fleet commit-trail doctrine (path-scoped commit + push to `origin`) is
-operator doctrine in `AGENTS.md`, not this local-ship section.
+Do not inherit Grok's direct-to-main policy for public remotes — but on
+fleet missions the L1's own path-scoped commit + push to cursor `origin`
+is the standard trail, not a publish decision.
 
 ## Completion wakeups — THE TICK
 
@@ -581,9 +615,7 @@ Use the existing `config/the-tick.machine.json` ground handlers for bounded
 completion-path wakeups, not repeated L0 shell sleeps or model-driven polls.
 Start the two `scripts/ufo-ground-handler.mjs --runner tick-0|tick-1`
 handlers through the host's supervised process API and observe readiness.
-An already running handler is reused, not replaced — reuse is the
-supervisor's duty (skip the start when the socket is healthy); the handler
-itself binds exclusively and exits 1 on EADDRINUSE.
+An already running handler is reused, not replaced.
 
 The native launcher writes `.ufo/sighting/handoffs/<run-id>.json` after its
 durable outcome. One `scripts/the-tick-ping.mjs --interval-ms 250
