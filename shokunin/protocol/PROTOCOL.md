@@ -21,6 +21,10 @@ that deployment.
 mint → shonen (apprentice) → shokunin (artisan of a domain) → jin'i-ryu (self-iterating)
 ```
 
+At every rank the learning signal is the path in `LEARNING.md`: corpus
+expansion, rising quality, and increasingly well-calibrated recognition of
+quality, each judged per round.
+
 - **Shonen** — minted when a domain demand is proven: two documented *unplaceable* demand instances
   (work no existing province could absorb) or an explicit operator directive — the mint bar, stated
   once here; closure step 3 applies it. It starts with a scoped `SKILL.md` + `PROVINCE.md`, an empty
@@ -89,7 +93,8 @@ start of every steered round; a long-lived mission does not grandfather supersed
 Round prompts embed the operative contract verbatim — the full round contract, not a convenience
 summary. Each *child-lane* prompt carries, as quoted protocol text, the round-level contract:
 (i) the mission/axes binding — `MISSION.md` and `AXES.md` govern the round and the lane works
-exactly one axis-move; (ii) the L2 minimum — at least 8 L2 lanes in one batched AgentSwarm call
+1–3 declared claims, each an axis-move with its own falsifiable before→after on a distinct
+axis, at least one on the lane's lowest non-retired axis (§Appendix, "Multi-claim rounds"); (ii) the L2 minimum — at least 8 L2 lanes in one batched AgentSwarm call
 (the Kimi host surface), a number this file does not own: `MISSION.md` §L2 concurrency is its
 source; (iii) commit-then-push ordering; (iv) push scope; and (v) the L0 side channel — plus the
 five child-lane items: the report path and filename, the commit-before-report ordering, the
@@ -375,7 +380,10 @@ a **probe**, and is registered as one.
   `expected.json` MUST pin the digest of every snapshot input file, and the gate verifies those
   digests before comparing verdicts: an edited snapshot is `snapshot_tampered` (could-not-evaluate),
   not a compared verdict, and a baseline without digests is reported `unpinned (legacy)`.
-- **Registry.** The schema is this section's; the rows live in each lane's `SKILL.md`: name,
+- **Registry.** The schema is this section's; a child lane's *registry home* is its own `SKILL.md`.
+  For main-repo lanes (`protocol`, `aggregator`), it is the explicitly lane-owned registry section
+  in root `SCORECARD.md`: protocol above `## Aggregator lane`, aggregator inside its own section;
+  no root `SKILL.md` is required (§Appendix, "Registry home"). Row fields: name,
   `gate|probe`, entry command, verdict map (code → class), self-test command and spelling,
   pinned-value path, write scope, owner. The aggregator ledger stays the routed-defect queue, not a
   second inventory; a fleet index is pointers to lane rows, never copied expected values. Frozen
@@ -394,8 +402,8 @@ a **probe**, and is registered as one.
   dependencies and write scope are the lane's.
 - **Delivery.** This section reaches a lane through the re-read duty, not the driver's prompt
   template (one of five child-lane items): the integrator names the exact `lane_prompt()` addition
-  in its round report, and closure grades no gate conformant until its registry row exists in the
-  lane's own `SKILL.md`.
+  in its round report, and closure grades no gate conformant until its registry row exists at the
+  lane's *registry home* defined under **Registry** above.
   The closure gate verifies the history pin (§Round-robin step 4) as committed evidence; a pin
   failure is a conformance defect routed under Closure consequence.
 
@@ -476,8 +484,12 @@ non-author verifier per **Promotion gates**.
 
 ## Fleet-2 conventions (adopted)
 
-- Expertise axes live in `AXES.md`; each lane owns a named subset and works one axis-move per round,
-  measured in `SCORECARD.md`. An axis-move inherits the evidence standard: before and after numbers
+- Expertise axes live in `AXES.md`; each lane owns a named subset and works 1–3 declared
+  claims per round (each an axis-move on a distinct axis with its own falsifiable
+  before→after; at least one on the lane's lowest non-retired axis; a claim may be a
+  capability acquisition or an exploratory taste-bound claim per `AXES.md` §Capabilities),
+  measured in `SCORECARD.md`. An exploratory claim verifies only as `unprovable-but-better`
+  with a named non-author reviewer on record (§Appendix, "Exploratory claims"). An axis-move inherits the evidence standard: before and after numbers
   each carry the counting command and the commit they were measured against, and a score no reader
   can re-derive is an opinion, not a measurement. A `SCORECARD.md` axis name not defined in
   `AXES.md` (`novelty`, `consistency`) is worked only if its row carries its mapping to one of the

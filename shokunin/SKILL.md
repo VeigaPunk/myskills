@@ -48,28 +48,43 @@ fleet driver + mint scaffolder).
 
 ## Running a craft round (in-session, Kimi-native)
 
-A round is ONE axis-move. Six axes exist — depth, coverage, operability,
+A round is **1–3 declared claims**, each an axis-move. Six axes exist — depth, coverage, operability,
 freshness, calibration, adjacency — and a lane owns a subset recorded in its
-`SCORECARD.md`.
+`SCORECARD.md`; `SCORECARD.md` also carries the capabilities repertoire table
+(`AXES.md` §Capabilities).
 
 1. **Declare the axis set.** Read the lane's `SCORECARD.md` (create it per
    `AXES.md` if missing). Name the axes in play, each with direction and an
    observable that decides movement.
-2. **Pick ONE axis.** The lane's lowest axis in `SCORECARD.md`. Saturated or
-   wrong-fit axes may be retired or split — record the reason in
-   `SCORECARD.md`.
-3. **Declare the falsifiable claim.** State the before→after delta that
-   counts as improvement and how it is measured. No claim, no round.
-4. **Do the work.** Land exactly one verifiable improvement. When subagents
-   are warranted, dispatch ONE batched AgentSwarm call with ≥8 lanes:
-   planner+connector / executor+scribe+scout / reviewer+critic split. Measure
-   on the delivered revision, not on intent.
+2. **Declare 1–3 claims.** Each claim is one axis-move on a distinct axis, with
+   its own falsifiable before→after. At least one claim works the lane's lowest
+   non-retired axis — waivable only by the stagnation nudge (`AXES.md`
+   §Capabilities). Claims must be causally separable; two claims on one axis in
+   one round count as one. Saturated or wrong-fit axes may be retired or split —
+   record the reason in `SCORECARD.md`.
+3. **Declare the claim set.** For each claim, state what counts as
+   improvement and how it is observed — a falsifiable before→after with a
+   counting command for a measurable claim, or a named target and rationale
+   for an exploratory (taste-bound) claim. No claim, no round.
+4. **Do the work.** Land every claimed improvement; a claim may be a capability
+   acquisition — it runs, its output verifies, and the `SCORECARD.md`
+   capabilities table gains the row that round. When subagents are warranted,
+   dispatch ONE batched AgentSwarm call with ≥8 lanes:
+   planner+connector / executor+scribe+scout / reviewer+critic split. Lead
+   every L2 prompt with `/skill:godspeed` + the verbatim directive bytes from
+   `~/.agents/skills/godspeed/directive.md` (resumes don't re-carry it).
+   Measure on the delivered revision, not on intent.
 5. **Judge EVERY axis.** Each axis gets a verdict: `improved`, `harmed`,
    `unchanged`, or `unprovable-but-better`. **No scalars** — a number is not
-   a verdict.
-6. **Admit or reject.** Admit only if ≥1 axis improved AND none harmed. A
-   trade (one up, one down) is NOT an improvement: report both verdicts and
-   let the operator rule. Never average a trade into an accept.
+   a verdict. An exploratory claim lands `unprovable-but-better` only with a
+   named non-author reviewer on record; otherwise it is `unprovable` and
+   honest stop applies.
+6. **Admit or reject.** A claim verifies if it measured, or if it is an
+   exploratory claim carrying a named non-author `unprovable-but-better`
+   judgment. Admit only if every claim verifies and no axis is harmed (hence
+   ≥1 axis improved). A trade anywhere — one axis up, another down — is NOT
+   an improvement: report all verdicts and let the operator rule. Never
+   average a trade into an accept.
 7. **Record.** Verdict + evidence concisely: before→after in `SCORECARD.md`
    (every score is a claim carrying its counting command and measured
    commit), evidence in `LOG.md` (append-only), report at
