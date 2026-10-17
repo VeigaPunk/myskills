@@ -59,7 +59,7 @@ freshness, calibration, adjacency — and a lane owns a subset recorded in its
 2. **Declare 1–3 claims.** Each claim is one axis-move on a distinct axis, with
    its own falsifiable before→after. At least one claim works the lane's lowest
    non-retired axis — waivable only by the stagnation nudge (`AXES.md`
-   §Capabilities). Claims must be causally separable; two claims on one axis in
+   §The stagnation nudge). Claims must be causally separable; two claims on one axis in
    one round count as one. Saturated or wrong-fit axes may be retired or split —
    record the reason in `SCORECARD.md`.
 3. **Declare the claim set.** For each claim, state what counts as
