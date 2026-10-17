@@ -1,6 +1,6 @@
 ---
 name: shokunin
-description: Shokunin (職人) auto-agent-creation fleet for Kimi Code CLI — mint domain-specialist agents that carry their own logic, then iterate them with one-axis-move craft rounds judged per axis (improved/harmed/unchanged/unprovable-but-better, never scalar scores). Activate on "craft round", "axis move", "grind an axis", minting/creating a specialist agent, running or judging a shokunin round, or fleet/watchdog operations.
+description: Shokunin (職人) auto-agent-creation fleet for Kimi Code CLI — mint domain-specialist agents that carry their own logic, then iterate them with 1–3-claim craft rounds (each claim one axis-move; measurable or exploratory) judged per axis (improved/harmed/unchanged/unprovable-but-better, never scalar scores). Activate on "craft round", "axis move", "grind an axis", minting/creating a specialist agent, running or judging a shokunin round, or fleet/watchdog operations.
 ---
 
 # Shokunin — 職人, the craft fleet
